@@ -4,6 +4,15 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const router = require('./router/index');
 const errorMiddleware = require('./middlewares/error-middleware');
+const db = require('./config/db');
+
+db.authenticate()
+  .then((result) => {
+    console.log('Connection established.');
+  })
+  .catch((error) => {
+    console.log('Unable to connect to db: ', error);
+  });
 
 const PORT = process.env.PORT || 3000;
 const app = express();
