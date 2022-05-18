@@ -71,6 +71,14 @@ class UserController {
       next(e);
     }
   }
+
+  async test(req, res, next) {
+    try {
+      return res.json({ result: 'Working!' });
+    } catch (e) {
+      next(e);
+    }
+  }
 }
 
 module.exports = new UserController();
