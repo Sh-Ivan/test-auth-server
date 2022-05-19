@@ -21,8 +21,8 @@ class UserService {
       activationLink,
     });
 
-    const tokens = tokenService.generateTokens({ ...userDto });
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    const tokens = tokenService.generateTokens({ ...user });
+    await tokenService.saveToken(user.id, tokens.refreshToken);
 
     return { ...tokens, user };
   }
@@ -69,7 +69,7 @@ class UserService {
     const user = await User.findOne({ where: { id: userData.id } });
     const tokens = tokenService.generateTokens({ ...user });
 
-    await tokenService.saveToken(userDto.id, tokens.refreshToken);
+    await tokenService.saveToken(user.id, tokens.refreshToken);
     return { ...tokens, user };
   }
 }

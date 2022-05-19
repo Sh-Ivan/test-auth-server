@@ -1,3 +1,4 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const tokenModel = require('../models/token-model');
 
@@ -36,8 +37,7 @@ class TokenService {
   async saveToken(userId, refreshToken) {
     const tokenData = await tokenModel.findOne({ where: { user: userId } });
     if (tokenData) {
-      tokenData.refreshToken = refreshToken;
-      return tokenData.save();
+      return tokenData.update({ refreshToken }, { where: { user: userId } });
     }
     const token = await tokenModel.create({ user: userId, refreshToken });
     return token;
