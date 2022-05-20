@@ -21,7 +21,9 @@ class UserService {
       activationLink,
     });
 
-    const tokens = tokenService.generateTokens({ ...user });
+    const { id, isActivated } = user;
+
+    const tokens = tokenService.generateTokens({ id, email, isActivated });
     await tokenService.saveToken(user.id, tokens.refreshToken);
 
     return { ...tokens, user };
@@ -46,10 +48,11 @@ class UserService {
       throw ApiError.BadRequest('Неверный пароль');
     }
 
-    const tokens = tokenService.generateTokens({ ...user });
+    const { id, isActivated } = user;
+    const tokens = tokenService.generateTokens({ id, email, isActivated });
 
-    await tokenService.saveToken(user.id, tokens.refreshToken);
-    return { ...tokens, user };
+    await tokenService.saveToken(id, tokens.refreshToken);
+    return { ...tokens, user: { id, email, isActivated } };
   }
 
   async logout(refreshToken) {
@@ -67,10 +70,11 @@ class UserService {
       throw ApiError.UnauthorizedError();
     }
     const user = await User.findOne({ where: { id: userData.id } });
-    const tokens = tokenService.generateTokens({ ...user });
+    const { id, email, isActivated } = user;
+    const tokens = tokenService.generateTokens({ id, email, isActivated });
 
-    await tokenService.saveToken(user.id, tokens.refreshToken);
-    return { ...tokens, user };
+    await tokenService.saveToken(id, tokens.refreshToken);
+    return { ...tokens, user: { id, email, isActivated } };
   }
 }
 

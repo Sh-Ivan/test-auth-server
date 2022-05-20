@@ -21,9 +21,9 @@ const User = sequelize.define(
       type: DataTypes.TEXT,
     },
   },
-  (options = {
+  {
     timestamps: false,
-  })
+  }
 );
 
 module.exports = User;
